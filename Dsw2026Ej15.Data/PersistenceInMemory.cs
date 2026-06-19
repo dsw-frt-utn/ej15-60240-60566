@@ -8,7 +8,7 @@ using Dsw2026Ej15.Data.Abstractions;
 
 namespace Dsw2026Ej15.Data
 {
-    internal class PersistenceInMemory : IPersistence
+    public class PersistenceInMemory : IPersistence
     {
         private List<Speciality> _specialities = [];
         private List<Doctor> _doctors = [];
@@ -30,7 +30,7 @@ namespace Dsw2026Ej15.Data
 
                 var json = File.ReadAllText(jsonPath);
 
-                var specialities = JsonSerializer.Deserialize<List<SpecialityDto>>(
+                var specialities = JsonSerializer.Deserialize<List<Speciality>>(
                     json,
                     new JsonSerializerOptions
                     {

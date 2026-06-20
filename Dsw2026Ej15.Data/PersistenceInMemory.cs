@@ -28,11 +28,6 @@ namespace Dsw2026Ej15.Data
             return _specialities.SingleOrDefault(s => s.Id == specialityId);
         }
 
-        public void SaveDcoctor(Doctor doctor)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SaveDoctor(Doctor doctor)
         {
             _doctors.Add(doctor);
@@ -64,6 +59,15 @@ namespace Dsw2026Ej15.Data
             catch (Exception)
             {
             }
+        }
+        public void AddDoctor(Doctor doctor)
+        {
+            _doctors.Add(doctor);
+        }
+
+        public IEnumerable<Doctor> GetDoctors()
+        {
+            return _doctors.Where(d => d.IsActive);
         }
 
     }

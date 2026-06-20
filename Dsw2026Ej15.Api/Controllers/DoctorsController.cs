@@ -30,8 +30,17 @@ public class DoctorsController : AppController
         }
 
         var doctor = new Doctor(request.Name, request.LicenseNumber, speciality);
-        _persistence.SaveDcoctor(doctor);
+        _persistence.SaveDoctor(doctor);
 
         return Created();
+    }
+
+    [HttpGet("doctors")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetDoctors()
+    {
+        var doctors = _persistence.GetDoctors();
+
+        return Ok(doctors);
     }
 }

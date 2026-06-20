@@ -18,6 +18,25 @@ namespace Dsw2026Ej15.Data
             LoadSpecialities();
         }
 
+        public Speciality? GetSpeciality(Guid id)
+        {
+            return _specialities.SingleOrDefault(E => E.Id == id);
+        }
+
+        public Speciality? GetSpecialityById(Guid specialityId)
+        {
+            return _specialities.SingleOrDefault(s => s.Id == specialityId);
+        }
+
+        public void SaveDcoctor(Doctor doctor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveDoctor(Doctor doctor)
+        {
+            _doctors.Add(doctor);
+        }
 
         private void LoadSpecialities()
         {

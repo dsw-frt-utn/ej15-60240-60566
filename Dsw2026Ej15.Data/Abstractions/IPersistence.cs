@@ -8,10 +8,11 @@ namespace Dsw2026Ej15.Data.Abstractions
     public interface IPersistence
     {
         Speciality? GetSpecialityById(Guid specialityId);
-        void AddDoctor(Doctor doctor);
+
         void SaveDoctor(Doctor doctor);
 
-        IEnumerable<Doctor> GetDoctors();
-    }
+        Doctor? GetDoctorById(Guid id);
 
+        List<Doctor> GetDoctors();
+    }
 }

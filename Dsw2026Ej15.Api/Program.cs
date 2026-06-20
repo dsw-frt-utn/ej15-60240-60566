@@ -1,5 +1,7 @@
 using Dsw2026Ej15.Data;
 using Dsw2026Ej15.Data.Abstractions;
+using Dsw2026Ej15.Api.Middlewares;
+
 namespace Dsw2026Ej15.Api
 {
     public class Program
@@ -10,8 +12,8 @@ namespace Dsw2026Ej15.Api
 
             // Add services to the container.
             builder.Services.AddSingleton<IPersistence, PersistenceInMemory>();
-
             builder.Services.AddControllers();
+            builder.Services.AddHealthChecks();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -33,12 +35,15 @@ namespace Dsw2026Ej15.Api
                 app.MapOpenApi();
             }
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            app.MapHealthChecks("/health-check");
 
             app.Run();
         }

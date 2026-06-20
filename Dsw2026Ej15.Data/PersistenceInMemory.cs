@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 using System.Text.Json;
 using Dsw2026Ej15.Domain.Entities;
 using Dsw2026Ej15.Data.Abstractions;
@@ -20,7 +18,7 @@ namespace Dsw2026Ej15.Data
 
         public Speciality? GetSpeciality(Guid id)
         {
-            return _specialities.SingleOrDefault(E => E.Id == id);
+            return _specialities.SingleOrDefault(e => e.Id == id);
         }
 
         public Speciality? GetSpecialityById(Guid specialityId)
@@ -31,6 +29,16 @@ namespace Dsw2026Ej15.Data
         public void SaveDoctor(Doctor doctor)
         {
             _doctors.Add(doctor);
+        }
+
+        public Doctor? GetDoctorById(Guid id)
+        {
+            return _doctors.SingleOrDefault(d => d.Id == id);
+        }
+
+        public List<Doctor> GetDoctors()
+        {
+            return _doctors;
         }
 
         private void LoadSpecialities()
@@ -51,24 +59,20 @@ namespace Dsw2026Ej15.Data
                         PropertyNameCaseInsensitive = true
                     });
 
-                _specialities = [
+                _specialities =
+                [
                     .. specialities.Select(s =>
-                    new Speciality(s.Name, s.Description, s.Id))
+                        new Speciality(s.Name, s.Description, s.Id))
                 ];
             }
             catch (Exception)
             {
             }
         }
+
         public void AddDoctor(Doctor doctor)
         {
             _doctors.Add(doctor);
         }
-
-        public IEnumerable<Doctor> GetDoctors()
-        {
-            return _doctors.Where(d => d.IsActive);
-        }
-
     }
 }

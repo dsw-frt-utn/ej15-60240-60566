@@ -12,7 +12,10 @@ public class DoctorsController : AppController
     {
         _persistence = persistence;
     }
+
     [HttpPost("doctors")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctor(DoctorModel.Request request)
     {
         if(string .IsNullOrWhiteSpace(request.Name) || string .IsNullOrWhiteSpace(request.LicenseNumber))

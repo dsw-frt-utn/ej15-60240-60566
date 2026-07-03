@@ -1,6 +1,7 @@
 using Dsw2026Ej15.Data;
 using Dsw2026Ej15.Data.Abstractions;
 using Dsw2026Ej15.Api.Middlewares;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dsw2026Ej15.Api
 {
@@ -10,8 +11,13 @@ namespace Dsw2026Ej15.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;DataBase=Dsw20206Ej15;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=true";
             // Add services to the container.
-            builder.Services.AddSingleton<IPersistence, PersistenceInMemory>();
+            builder.Services.AddDbContext<Dsw2026Ej15DbContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
+            builder.Services.AddScoped<IPersistence, PersistenceEf>();
             builder.Services.AddControllers();
             builder.Services.AddHealthChecks();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

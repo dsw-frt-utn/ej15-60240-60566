@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Dsw2026Ej15.Domain.Entities;
 using Dsw2026Ej15.Data.Abstractions;
+using Dsw2026Ej15.Data.Dto;
 
 namespace Dsw2026Ej15.Data
 {
@@ -16,29 +17,30 @@ namespace Dsw2026Ej15.Data
             LoadSpecialities();
         }
 
-        public Speciality? GetSpeciality(Guid id)
+        public Task<Speciality?> GetSpecialityById(Guid specialityId)
         {
-            return _specialities.SingleOrDefault(e => e.Id == id);
+            return Task.FromResult(_specialities.SingleOrDefault(s => s.Id == specialityId));
         }
 
-        public Speciality? GetSpecialityById(Guid specialityId)
-        {
-            return _specialities.SingleOrDefault(s => s.Id == specialityId);
-        }
-
-        public void SaveDoctor(Doctor doctor)
+        public Task SaveDoctor(Doctor doctor)
         {
             _doctors.Add(doctor);
+            return Task.CompletedTask;
         }
 
-        public Doctor? GetDoctorById(Guid id)
+        public Task<Doctor?> GetDoctorById(Guid id)
         {
-            return _doctors.SingleOrDefault(d => d.Id == id);
+            return Task.FromResult(_doctors.SingleOrDefault(d => d.Id == id));
         }
 
-        public List<Doctor> GetDoctors()
+        public Task<List<Doctor>> GetDoctors()
         {
-            return _doctors;
+            return Task.FromResult(_doctors);
+        }
+
+        public Task SaveChanges()
+        {
+            return Task.CompletedTask;
         }
 
         private void LoadSpecialities()
@@ -52,27 +54,30 @@ namespace Dsw2026Ej15.Data
 
                 var json = File.ReadAllText(jsonPath);
 
-                var specialities = JsonSerializer.Deserialize<List<Speciality>>(
+                var specialities = JsonSerializer.Deserialize<List<SpecialityDto>>(
                     json,
                     new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     });
 
+                if (specialities is null)
+                {
+                    return;
+                }
+
                 _specialities =
                 [
                     .. specialities.Select(s =>
                         new Speciality(s.Name, s.Description, s.Id))
                 ];
+               
             }
             catch (Exception)
             {
+
             }
         }
 
-        public void AddDoctor(Doctor doctor)
-        {
-            _doctors.Add(doctor);
-        }
     }
 }

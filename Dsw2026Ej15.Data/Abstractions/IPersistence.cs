@@ -7,12 +7,14 @@ namespace Dsw2026Ej15.Data.Abstractions
 {
     public interface IPersistence
     {
-        Speciality? GetSpecialityById(Guid specialityId);
+        Task<Speciality?> GetSpecialityById(Guid specialityId);
 
-        void SaveDoctor(Doctor doctor);
+        Task SaveDoctor(Doctor doctor);
 
-        Doctor? GetDoctorById(Guid id);
+        Task<Doctor?> GetDoctorById(Guid id);
 
-        List<Doctor> GetDoctors();
+        Task<List<Doctor>> GetDoctors();
+
+        Task SaveChanges();
     }
 }

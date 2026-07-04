@@ -30,7 +30,7 @@ public class DoctorsController : AppController
             throw new ValidationException("LicenseNumber es requerido");
         }
 
-        var speciality = _persistence.GetSpecialityById(request.SpecialityId);
+        var speciality = await _persistence.GetSpecialityById(request.SpecialityId);
 
         if (speciality is null)
         {
@@ -42,7 +42,7 @@ public class DoctorsController : AppController
             request.LicenseNumber,
             speciality);
 
-        _persistence.SaveDoctor(doctor);
+        await _persistence.SaveDoctor(doctor);
 
         return Created("", doctor);
     }
@@ -52,7 +52,7 @@ public class DoctorsController : AppController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDoctor(Guid id)
     {
-        var doctor = _persistence.GetDoctorById(id);
+        var doctor = await _persistence.GetDoctorById(id);
 
         if (doctor is null || !doctor.IsActive)
         {
@@ -73,7 +73,7 @@ public class DoctorsController : AppController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteDoctor(Guid id)
     {
-        var doctor = _persistence.GetDoctorById(id);
+        var doctor = await _persistence.GetDoctorById(id);
 
         if (doctor is null)
         {
@@ -82,14 +82,16 @@ public class DoctorsController : AppController
 
         doctor.Deactivate();
 
+        await _persistence.SaveChanges();
+
         return NoContent();
     }
 
     [HttpGet("doctors")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult GetDoctors()
+    public async Task<IActionResult> GetDoctors()
     {
-        var doctors = _persistence.GetDoctors();
+        var doctors = await _persistence.GetDoctors();
 
         return Ok(doctors);
     }
